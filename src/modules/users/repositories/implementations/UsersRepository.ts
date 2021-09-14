@@ -31,21 +31,36 @@ class UsersRepository implements IUsersRepository {
     });
 
     this.users.push(user);
+    console.log(user);
+
+    return user;
   }
 
   findById(id: string): User | undefined {
     const user = this.users.find((user) => user.id === id);
-    console.log(user);
+
     return user;
   }
 
   findByEmail(email: string): User | undefined {
     // Complete aqui
     const user = this.users.find((user) => user.email === email);
+
     return user;
   }
 
-  turnAdmin(receivedUser: User): User {}
+  turnAdmin(receivedUser: User): User {
+    const user = receivedUser;
+    if (!user) {
+      return;
+    }
+    if (user.admin === true) {
+      throw new Error("User already admin");
+    }
+    user.admin = true;
+    user.updated_at = new Date();
+    return user;
+  }
 
   list(): User[] {
     return this.users;

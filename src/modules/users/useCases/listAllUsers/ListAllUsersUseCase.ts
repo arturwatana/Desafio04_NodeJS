@@ -8,7 +8,17 @@ interface IRequest {
 class ListAllUsersUseCase {
   constructor(private usersRepository: IUsersRepository) {}
 
-  execute(): User[] {
+  execute({ user_id }): User[] {
+    const user = this.usersRepository.findById(user_id);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    if (user.admin === false) {
+      throw new Error("Admin Power needed");
+    }
+
     const users = this.usersRepository.list();
 
     return users;
